@@ -18,18 +18,21 @@ import java.util.stream.Collectors;
 public class MainController {
     private final Random random = new Random();
 
-    // kód níže až po GetMapping je zkopírován ze zadání úkolu - nápověda od Filipa. Nevím co dát do té závorky za ReadAllLines
-    private static List<String> readAllLines("citaty.txt")throws IOException{
+    // kód níže až po GetMapping je zkopírován ze zadání úkolu - nápověda od Filipa.
+    // Nevím co dát do té závorky za ReadAllLines.."citaty.txt jsou červeně podtrženy
+    // Idea to nechce vzít jako parametr
+    private static List<String> readAllLines("citaty.txt")throws IOException {
 
-        ClassLoader classLoader=Thread.currentThread().getContextClassLoader();
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
-        try(InputStream inputStream=classLoader.getResourceAsStream("citaty.txt");
-            BufferedReader reader=new BufferedReader(new InputStreamReader(inputStream,StandardCharsets.UTF_8))){
+        try (InputStream inputStream = classLoader.getResourceAsStream("citaty.txt");
+             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
-            return reader
+            result = reader
                     .lines()
                     .collect(Collectors.toList());
         }
+        return result;
     }
 
     @GetMapping("/")
