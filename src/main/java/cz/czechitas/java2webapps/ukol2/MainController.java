@@ -18,42 +18,38 @@ import java.util.stream.Collectors;
 public class MainController {
     private final Random random = new Random();
 
-    // kód níže až po GetMapping je zkopírován ze zadání úkolu - nápověda od Filipa.
-    // Nevím co dát do té závorky za ReadAllLines.."citaty.txt jsou červeně podtrženy
-    // Idea to nechce vzít jako parametr
-    private static List<String> readAllLines("citaty.txt")throws IOException {
+    private static List<String> readAllLines()throws IOException {
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
         try (InputStream inputStream = classLoader.getResourceAsStream("citaty.txt");
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
-            result = reader
+            return reader
                     .lines()
                     .collect(Collectors.toList());
         }
-        return result;
     }
 
     @GetMapping("/")
-    public ModelAndView citat() {
+    public ModelAndView citat() throws IOException {
 
-        List<String> seznamCitatu = List.of("Debugging /de·bugh·ing/ (verb): The Classic Mystery Game where you are the detective, the victim, and the murderer.",
+       /* List<String> seznamCitatu = List.of("Debugging /de·bugh·ing/ (verb): The Classic Mystery Game where you are the detective, the victim, and the murderer.",
             "A user interface is like a joke. If you have to explain it, it's not that good.",
             "To replace programmers with robots, clients will have to accurately describe what they want. We're safe.",
             "I have a joke on programming but it only works on my computer.",
             "99 little bugs in the code, 99 bugs in the code. Take one down, patch it around. 127 little bugs in the code…",
             "When I wrote this code, only God & I understood what it did. Now… Only God knows.",
             "Programmer (noun.): A machine that turns coffee into code.",
-            "Real programmers count from 0.");
+            "Real programmers count from 0.");*/
 
     List<String> seznamPozadi = List.of("2hzL3NMOozs", "exxWKBGrNqA", "RFCFhhl3xfQ", "JPFL2E7CSYU", "QYvpHmW2eos", "oTcaW8Pqv3U", "9pY2tQBnHIg", "C-0PGZ51dYQ", "q-0uG3G4ipM", "Rt-8hbJMLxY");
 
-    int nahodnyCitat = random.nextInt(seznamCitatu.size());
+    int nahodnyCitat = random.nextInt(readAllLines().size());
     int nahodnePozadi = random.nextInt(seznamPozadi.size());
 
     ModelAndView modelAndView = new ModelAndView("index");
-    modelAndView.addObject("vybranyCitat", seznamCitatu.get(nahodnyCitat));
+    modelAndView.addObject("vybranyCitat", readAllLines().get(nahodnyCitat));
     modelAndView.addObject("vybranePozadi", seznamPozadi.get(nahodnePozadi));
     return modelAndView;
     }
